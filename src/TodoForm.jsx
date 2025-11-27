@@ -1,9 +1,9 @@
 function TodoForm(){
     return(
     <form>
-        <label htmlFor = "todoTitle"> Todo </label>
+        <label htmlFor="todoTitle">Todo</label>
         <input id="todoTitle" type="text"/>
-        <button> Add Todo</button>
+        <button>Add Todo</button>
     </form>
     )
 }
