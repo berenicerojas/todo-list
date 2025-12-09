@@ -1,9 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import TodoForm from './TodoForm'
-import './TodoForm'
 import TodoList from './TodoList'
-import './TodoList'
 
 function App() {
   const[newTodo,setNewTodo]= useState('Visible text')
