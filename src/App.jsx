@@ -1,17 +1,23 @@
 import { useState } from 'react'
 import './App.css'
 import TodoForm from './TodoForm'
-import TodoList from './TodoList'
+import TodoList from './TodoList';
 
 function App() {
-  const[newTodo,setNewTodo]= useState('Visible text')
+  const[todoList,setTodoList]= useState([]);
 
-  return (
-    <div>
-      <h1>My Todos</h1>
-      <TodoForm/> 
-      <p>{newTodo}</p>
-      <TodoList/>
+  const addTodo= (title)=>{
+     const newTodo= {
+      title,
+      id: Date.now()
+    };
+    setTodoList((prevTodoList)=>[...prevTodoList, newTodo]);
+  };
+
+  return(
+    <div className="App">
+    <TodoForm onAddTodo={addTodo}/>
+    <TodoList todoList={todoList}/>
     </div>
   )
 }
