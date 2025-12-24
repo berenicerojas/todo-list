@@ -9,7 +9,7 @@ function App() {
   function completeTodo(id){
     const updatedTodos = todoList.map((todo) =>{
       if(todo.id === id){
-        return {...todoList, isCompleted: true};
+        return {...todo, isCompleted: true};
       }
       return todo;
     });
