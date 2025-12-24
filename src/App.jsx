@@ -6,18 +6,32 @@ import TodoList from './TodoList';
 function App() {
   const [todoList, setTodoList] = useState([]);
 
+  function completeTodo(id){
+    const updatedTodos = todoList.map((todo) =>{
+      if(todo.id === id){
+        return {...todoList, isCompleted: true};
+      }
+      return todo;
+    });
+    setTodoList(updatedTodos);
+  }
+
   const addTodo = (title)=>{
      const newTodo = {
       title,
-      id: Date.now()
+      id: Date.now(),
+      isCompleted : false,
     };
-    setTodoList((prevTodoList)=>[...prevTodoList, newTodo]);
+    setTodoList((prevTodoList) => [...prevTodoList, newTodo]);
   };
 
   return(
     <div className = "App">
     <TodoForm onAddTodo = {addTodo}/>
-    <TodoList todoList = {todoList}/>
+    <TodoList 
+      todoList = {todoList}
+      onCompleteTodo = {completeTodo}
+    />
     </div>
   );
 }
