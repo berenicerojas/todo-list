@@ -16,7 +16,6 @@ function TodoForm({onAddTodo}){
 
     return(
     <form onSubmit = {handleAddTodo}>
-        <button disabled={workingTodoTitle === ''}>Add Todo</button>
         <TextInputWithLabel
             label = "Todo"
             elementId = "todoTitle"
@@ -24,6 +23,7 @@ function TodoForm({onAddTodo}){
             value = {workingTodoTitle}
             onChange ={(event) => setWorkingTodoTitle (event.target.value)} 
         />
+        <button disabled={workingTodoTitle === ''}>Add Todo</button>
     </form>
     );
 }
