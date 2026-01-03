@@ -18,7 +18,7 @@ function TodoForm({onAddTodo}){
     <form onSubmit = {handleAddTodo}>
         <button disabled={workingTodoTitle === ''}>Add Todo</button>
         <TextInputWithLabel
-            labelText = "Todo"
+            label = "Todo"
             elementId = "todoTitle"
             ref = {todoTitleInput}
             value = {workingTodoTitle}

@@ -31,14 +31,15 @@ function TodoListItem({todo, onCompleteTodo, onUpdateTodo}){
                 {isEditing ? (
                     <>
                         <TextInputWithLabel 
+                        label= "Edit Todo: "
+                        elementId= {`edit-${todo.id}`}
                         value = {workingTitle}
                         onChange = {handleEdit}
                         />
-                        <button type="submit" >Save</button>
                         <button type="button" onClick = {handleCancel}>
                             Cancel
                         </button>
-                        <button type="button" onClick={handleUpdate}>
+                        <button type="submit" onClick={handleUpdate}>
                             Update
                         </button>
                     </>

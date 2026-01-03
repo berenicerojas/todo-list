@@ -1,4 +1,3 @@
-import '/.TextInputWithLabel'
 
 function TextInputWithLabel({
   elementId,
