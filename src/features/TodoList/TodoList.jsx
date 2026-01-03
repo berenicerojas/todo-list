@@ -1,4 +1,4 @@
-import ToDoListItem from "./TodoListItem";
+import TodoListItem from "./TodoListItem";
 function TodoList({todoList, onCompleteTodo}){
   const filteredTodoList = todoList.filter((todo) => todo.isCompleted === false);
   
@@ -9,7 +9,7 @@ function TodoList({todoList, onCompleteTodo}){
       ):(
         <ul>
           {filteredTodoList.map((todo) =>(
-            <ToDoListItem 
+            <TodoListItem 
               key = {todo.id}
               todo = {todo}
               onCompleteTodo = {onCompleteTodo}

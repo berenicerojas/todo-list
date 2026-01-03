@@ -1,11 +1,21 @@
 ///I erased my code and had to recover it. This is my week 6 assignment
 import { useState } from 'react'
 import './App.css'
-import TodoForm from './TodoForm'
-import TodoList from './TodoList';
+import TodoList from './features/TodoList/TodoList';
+import TodoForm from './features/TodoList/TodoForm';
 
 function App() {
   const [todoList, setTodoList] = useState([]);
+
+  const updateTodo = (editedTodo) => {
+    const updatedTodos = todoList.map((todo) => {
+      if (todo.id === editedTodo.id) {
+        return{...editedTodo};
+      }
+      return todo;
+    });
+      setTodoList(updatedTodos);
+  };
 
   function completeTodo(id){
     const updatedTodos = todoList.map((todo) =>{
@@ -32,9 +42,11 @@ function App() {
     <TodoList 
       todoList = {todoList}
       onCompleteTodo = {completeTodo}
-    />
+      onUpdateTodo = {updateTodo}
+      />
     </div>
   );
 }
 
-export default App
+
+export default App;
