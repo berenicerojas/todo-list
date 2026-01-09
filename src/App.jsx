@@ -18,12 +18,9 @@ function App() {
   };
 
   function completeTodo(id){
-    const updatedTodos = todoList.map((todo) =>{
-      if(todo.id === id){
-        return {...todo, isCompleted: true};
-      }
-      return todo;
-    });
+    const updatedTodos = todoList.map((todo) =>
+      todo.id === id ? {todo, isCompleted : true}: todo
+    );
     setTodoList(updatedTodos);
   }
 
