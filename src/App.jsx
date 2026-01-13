@@ -1,23 +1,28 @@
 ///I erased my code and had to recover it. This is my week 6 assignment
 import { useState } from 'react'
 import './App.css'
-import TodoForm from './TodoForm'
-import TodoList from './TodoList';
+import TodoList from './features/TodoList/TodoList';
+import TodoForm from './features/TodoForm';
 
 function App() {
   const [todoList, setTodoList] = useState([]);
 
-  function completeTodo(id){
-    const updatedTodos = todoList.map((todo) =>{
-      if(todo.id === id){
-        return {...todo, isCompleted: true};
-      }
-      return todo;
+  const updateTodo = (editedTodo) => {
+    
+    const updatedTodos = todoList.map((todo) => {
+      return todo.id === editedTodo.id ? {...editedTodo } : todo;
     });
+      setTodoList(updatedTodos);
+  };
+
+  function completeTodo(id){
+    const updatedTodos = todoList.map((todo) =>
+      todo.id === id ? {todo, isCompleted : true}: todo
+    );
     setTodoList(updatedTodos);
   }
 
-  const addTodo = (title)=>{
+  const addTodo = (title) => {
      const newTodo = {
       title,
       id: Date.now(),
@@ -32,9 +37,11 @@ function App() {
     <TodoList 
       todoList = {todoList}
       onCompleteTodo = {completeTodo}
-    />
+      onUpdateTodo = {updateTodo}
+      />
     </div>
   );
 }
 
-export default App
+
+export default App;
