@@ -8,11 +8,9 @@ function App() {
   const [todoList, setTodoList] = useState([]);
 
   const updateTodo = (editedTodo) => {
+    
     const updatedTodos = todoList.map((todo) => {
-      if (todo.id === editedTodo.id) {
-        return{...editedTodo };
-      }
-      return todo;
+      return todo.id === editedTodo.id ? {...editedTodo } : todo;
     });
       setTodoList(updatedTodos);
   };
@@ -24,7 +22,7 @@ function App() {
     setTodoList(updatedTodos);
   }
 
-  const addTodo = (title)=>{
+  const addTodo = (title) => {
      const newTodo = {
       title,
       id: Date.now(),

@@ -1,16 +1,20 @@
 import { useRef, useState } from "react"
 import TextInputWithLabel from "../shared/TextInputWithLabel";
 
-function TodoForm({onAddTodo}){
+function TodoForm({onAddTodo}) {
+    
     const todoTitleInput = useRef(null);
 
     const [workingTodoTitle, setWorkingTodoTitle] = useState('');
 
     const handleAddTodo = (event) => {
+        
         event.preventDefault();
 
         onAddTodo(workingTodoTitle); 
+        
         setWorkingTodoTitle('');
+        
         todoTitleInput.current.focus();
     } 
 
