@@ -88,9 +88,13 @@ function App() {
       if (!resp.ok) throw new Error(`Update failed: ${resp.status}`);
     } catch (error) {
       setErrorMessage(`${error.message}. Reverting changes...`);
-      setTodoList(todoList.map((todo) => (todo.id === editedTodo.id ? originalTodo : todo)));
+      setTodoList((prevTodoList) => 
+        prevTodoList.map((todo) => 
+          todo.id === editedTodo.id ? originalTodo : todo
+      )
+    );
     }
-  };
+  }
 
   function completeTodo(id) {
     const todoToComplete = todoList.find((todo) => todo.id === id);
