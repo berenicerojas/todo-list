@@ -1,7 +1,7 @@
 import { useRef, useState } from "react"
 import TextInputWithLabel from "../shared/TextInputWithLabel";
 
-function TodoForm({onAddTodo}) {
+function TodoForm({onAddTodo, isSaving}) {
     
     const todoTitleInput = useRef(null);
 
@@ -11,25 +11,29 @@ function TodoForm({onAddTodo}) {
         
         event.preventDefault();
 
+        if (workingTodoTitle.trim()==='')return;
+
         onAddTodo(workingTodoTitle); 
-        
         setWorkingTodoTitle('');
         
-        todoTitleInput.current.focus();
+        if(todoTitleInput.current){
+            todoTitleInput.current.focus();
+        }
     } 
 
     return(
     <form onSubmit = {handleAddTodo}>
         <TextInputWithLabel
-            label = "Todo"
-            elementId = "todoTitle"
-            ref = {todoTitleInput}
+            id = "todoTitle"
             value = {workingTodoTitle}
-            onChange ={(event) => setWorkingTodoTitle (event.target.value)} 
-        />
-        <button disabled={workingTodoTitle === ''}>Add Todo</button>
+            onChange ={(event) => setWorkingTodoTitle (event.target.value)}
+            inputRef = {todoTitleInput}
+            >
+        title : </TextInputWithLabel>
+        <button type="submit" disabled={isSaving||workingTodoTitle.trim()===''}> {isSaving ? 'Saving ...' : 'Add Todo'}</button>
     </form>
     );
+
 }
 
 export default TodoForm
