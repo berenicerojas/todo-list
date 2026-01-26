@@ -9,7 +9,6 @@ const token = `Bearer ${import.meta.env.VITE_PAT}`;
 
 const encodeURL = ({sortField, sortDirection, queryString}) => {
   let sortQuery = `sort[0][field]=${sortField}&sort[0][direction]=${sortDirection}`;
-
   let searchQuery = "";
 
   if (queryString){
@@ -37,7 +36,7 @@ function App() {
       };
     
       try {
-        const resp = await fetch (encodeURL({ sortField, sortDirection}), options);
+        const resp = await fetch (encodeURL({ sortField, sortDirection, queryString}), options);
         if (!resp.ok){
           throw new Error(`Error: ${resp.status} ${resp.statusText}`);
         }
@@ -61,7 +60,7 @@ function App() {
       }
     };
     fetchTodos();
-   }, [sortField, sortDirection]);
+   }, [sortField, sortDirection, queryString]);
 
   const addTodo = async (title) => {
     const payload = { records: [{ fields: { title: title, isCompleted: false } }] };
@@ -73,7 +72,7 @@ function App() {
 
     try {
       setIsSaving(true);
-      const resp = await fetch(encodeURL({sortField,sortDirection}), options);
+      const resp = await fetch(encodeURL({sortField, sortDirection, queryString}), options);
       if (!resp.ok) throw new Error(`Failed to save: ${resp.status}`);
       const data = await resp.json();
       const savedTodo = { id: data.records[0].id, ...data.records[0].fields };
@@ -95,7 +94,7 @@ function App() {
     };
 
     try {
-      const resp = await fetch(encodeURL({ sortField, sortDirection}), {
+      const resp = await fetch(encodeURL({ sortField, sortDirection, queryString}), {
         method: 'PATCH',
         headers: { Authorization: token, 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
