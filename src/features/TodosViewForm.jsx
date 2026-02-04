@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+
 function TodoViewForm({
     sortDirection,
     setSortDirection,
@@ -6,6 +8,18 @@ function TodoViewForm({
     queryString,
     setQueryString
 }) {
+    const [localQueryString, setLocalQueryString] = useState(queryString);
+
+    useEffect(()=>{
+        const debounce = setTimeout(()=> {
+            setQueryString(localQueryString);
+    }, 500);
+
+    return ()=> {
+        clearTimeout(debounce);
+    };
+}, [localQueryString, setQueryString]);
+
     const preventRefresh = (e) => {
         e.preventDefault();
     };
@@ -17,12 +31,13 @@ function TodoViewForm({
                 <input 
                 id="search" 
                 type="text" 
-                value={queryString} onChange={(e) => setQueryString(e.target.value)}
+                value={localQueryString} 
+                onChange={(e) => setQueryString(e.target.value)}
                 placeholder="Type to fillter..."
                 />
                 <button 
                 type="button" 
-                onClick={() => setQueryString("")}>
+                onClick={() => setLocalQueryString("")}>
                     Clear
                     </button>
             </div>
