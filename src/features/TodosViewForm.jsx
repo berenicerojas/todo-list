@@ -32,7 +32,7 @@ function TodoViewForm({
                 id="search" 
                 type="text" 
                 value={localQueryString} 
-                onChange={(e) => setQueryString(e.target.value)}
+                onChange={(e) => setLocalQueryString(e.target.value)}
                 placeholder="Type to fillter..."
                 />
                 <button 
