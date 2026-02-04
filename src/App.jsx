@@ -1,8 +1,8 @@
-///I erased my code and had to recover it. This is my week 6 assignment
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import './App.css'
 import TodoList from './features/TodoList/TodoList';
 import TodoForm from './features/TodoForm';
+import TodosViewForm from './features/TodosViewForm';
 
 const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
 const token = `Bearer ${import.meta.env.VITE_PAT}`;
@@ -12,31 +12,39 @@ function App() {
   const [isLoading, setIsLoading] = useState (false);
   const [todoList, setTodoList] = useState([]);
   const [isSaving, setIsSaving] = useState (false);
+  const [sortField, setSortField] = useState("createdTime");
+  const [sortDirection, setSortDirection] = useState("desc");
+  const [queryString, setQueryString] = useState("");
+
+  const encodeURL = useCallback(()=>{
+    let sortQuery =`sort[0][field]=${sortField}&sort[0][direction]=${sortDirection}`;
+    let searchQuery ="";
+
+    if (queryString){
+      searchQuery = `&filterByFormula=SEARCH("${queryString}",+title)`;
+    }
+    return encodeURI(`${url}?${sortQuery}${searchQuery}`);
+  },[sortField, sortDirection, queryString]);
 
   useEffect(() => {
     const fetchTodos = async () => {
       setIsLoading(true);
+
       const options = {
         method : "GET",
         headers : { Authorization : token },
       };
     
       try {
-        const resp = await fetch (url, options);
-        if (!resp.ok){
-          throw new Error(`Error: ${resp.status} ${resp.statusText}`);
-        }
+        const resp = await fetch (encodeURL(), options);
+        if (!resp.ok) throw new Error(`Error: ${resp.status}`);
 
         const data = await resp.json();
-        const fetchedTodos = data.records.map((records) => {
-          const todo = {
-            id : records.id,
-            ...records.fields,
-          };
-
-          if (todo.isCompleted === undefined) todo.isCompleted = false;
-          return todo;
-        });
+        const fetchedTodos = data.records.map((records) => ({
+          id: records.id,
+          ...records.fields,
+          isCompleted: records.fields.isCompleted ?? false
+        }));
 
         setTodoList(fetchedTodos);
       } catch (error) {
@@ -46,7 +54,7 @@ function App() {
       }
     };
     fetchTodos();
-   }, []);
+   }, [encodeURL]);
 
   const addTodo = async (title) => {
     const payload = { records: [{ fields: { title: title, isCompleted: false } }] };
@@ -58,7 +66,7 @@ function App() {
 
     try {
       setIsSaving(true);
-      const resp = await fetch(url, options);
+      const resp = await fetch(encodeURL(), options);
       if (!resp.ok) throw new Error(`Failed to save: ${resp.status}`);
       const data = await resp.json();
       const savedTodo = { id: data.records[0].id, ...data.records[0].fields };
@@ -80,7 +88,7 @@ function App() {
     };
 
     try {
-      const resp = await fetch(url, {
+      const resp = await fetch(encodeURL(), {
         method: 'PATCH',
         headers: { Authorization: token, 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -106,6 +114,7 @@ function App() {
 
   return (
     <div className="App">
+
       <TodoForm onAddTodo={addTodo} isSaving={isSaving} />
       <TodoList 
         todoList={todoList} 
@@ -113,6 +122,16 @@ function App() {
         onUpdateTodo={updateTodo} 
         isLoading={isLoading} 
       />
+      <hr />
+      <TodosViewForm
+      sortDirection={sortDirection}
+      setSortDirection={setSortDirection}
+      sortField={sortField}
+      setSortField={setSortField}
+      queryString={queryString}
+      setQueryString={setQueryString}
+      />
+
       {errorMessage && (
         <div className="error-box">
           <hr />
