@@ -37,9 +37,7 @@ function TodoViewForm({
                 />
                 <button 
                 type="button" 
-                onClick={() => setLocalQueryString("")}>
-                    Clear
-                    </button>
+                onClick={() => setLocalQueryString("")}> Clear </button>
             </div>
             <div className="form-controls">
                 <label htmlFor="sortField">Sort by:</label>
