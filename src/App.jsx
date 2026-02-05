@@ -16,7 +16,7 @@ function App() {
   const [sortDirection, setSortDirection] = useState("desc");
   const [queryString, setQueryString] = useState("");
 
-  const encodeURL = useCallback(()=>{
+  const encodeUrl = useCallback(()=>{
     let sortQuery =`sort[0][field]=${sortField}&sort[0][direction]=${sortDirection}`;
     let searchQuery ="";
 
@@ -36,7 +36,7 @@ function App() {
       };
     
       try {
-        const resp = await fetch (encodeURL(), options);
+        const resp = await fetch (encodeUrl(), options);
         if (!resp.ok) throw new Error(`Error: ${resp.status}`);
 
         const data = await resp.json();
@@ -54,7 +54,7 @@ function App() {
       }
     };
     fetchTodos();
-   }, [encodeURL]);
+   }, [encodeUrl]);
 
   const addTodo = async (title) => {
     const payload = { records: [{ fields: { title: title, isCompleted: false } }] };
@@ -66,7 +66,7 @@ function App() {
 
     try {
       setIsSaving(true);
-      const resp = await fetch(encodeURL(), options);
+      const resp = await fetch(encodeUrl(), options);
       if (!resp.ok) throw new Error(`Failed to save: ${resp.status}`);
       const data = await resp.json();
       const savedTodo = { id: data.records[0].id, ...data.records[0].fields };
@@ -88,7 +88,7 @@ function App() {
     };
 
     try {
-      const resp = await fetch(encodeURL(), {
+      const resp = await fetch(encodeUrl(), {
         method: 'PATCH',
         headers: { Authorization: token, 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

@@ -32,14 +32,12 @@ function TodoViewForm({
                 id="search" 
                 type="text" 
                 value={localQueryString} 
-                onChange={(e) => setQueryString(e.target.value)}
+                onChange={(e) => setLocalQueryString(e.target.value)}
                 placeholder="Type to fillter..."
                 />
                 <button 
                 type="button" 
-                onClick={() => setLocalQueryString("")}>
-                    Clear
-                    </button>
+                onClick={() => setLocalQueryString("")}> Clear </button>
             </div>
             <div className="form-controls">
                 <label htmlFor="sortField">Sort by:</label>
