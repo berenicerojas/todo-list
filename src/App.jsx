@@ -4,8 +4,19 @@ import TodoList from './features/TodoList/TodoList';
 import TodoForm from './features/TodoForm';
 import TodosViewForm from './features/TodosViewForm';
 
+import statueLibertyIcon from './assets/statueLibertyIcon.jpg';
+import styles from './App.module.css';
+import styled from 'styled-components';
+
 const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
 const token = `Bearer ${import.meta.env.VITE_PAT}`;
+
+const ErrorIcon = styled.span`
+  margin-right: 10px;
+  font-size: 1.2rem;
+  display: inline-block;
+  vertical-align: middle;
+`;
 
 function App() {
   const [errorMessage, setErrorMessage] = useState ("");
@@ -113,7 +124,15 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <div className = {styles.container}>
+      <header>
+        <img 
+        src = {statueLibertyIcon} 
+        alt = "Statue Liberty Icon" 
+        className = {styles.Logo} 
+        />
+        <h1 style={{ margin: 0}}>My Tasks</h1>
+      </header>
 
       <TodoForm onAddTodo={addTodo} isSaving={isSaving} />
       <TodoList 
@@ -133,9 +152,9 @@ function App() {
       />
 
       {errorMessage && (
-        <div className="error-box">
+        <div className={styles.errorBox}>
           <hr />
-          <p>{errorMessage}</p>
+          <p><ErrorIcon>⚠️</ErrorIcon>{errorMessage}</p>
           <button onClick={() => setErrorMessage("")}>Dismiss</button>
         </div>
       )}

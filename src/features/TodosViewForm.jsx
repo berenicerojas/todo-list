@@ -1,4 +1,13 @@
 import { useState, useEffect } from "react";
+import styled from "styled-components";
+
+const StyledViewForm = styled.div`
+    padding: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+`;
 
 function TodoViewForm({
     sortDirection,
@@ -25,7 +34,7 @@ function TodoViewForm({
     };
 
     return(
-        <form className="view-form" onSubmit={preventRefresh}>
+        <StyledViewForm onSubmit={preventRefresh}>
             <div className="search-controls">
                 <label htmlFor="search">Search todos:</label>
                 <input 
@@ -33,7 +42,7 @@ function TodoViewForm({
                 type="text" 
                 value={localQueryString} 
                 onChange={(e) => setLocalQueryString(e.target.value)}
-                placeholder="Type to fillter..."
+                placeholder="Type to filter..."
                 />
                 <button 
                 type="button" 
@@ -60,7 +69,7 @@ function TodoViewForm({
                     <option value="desc">Descending</option>
                 </select>
             </div>
-        </form>
+        </StyledViewForm>
     );
 }
 

@@ -1,3 +1,10 @@
+import styled from "styled-components";
+
+const StyledFieldContainer = styled.div`
+  padding: .5rem 0;
+  display: flex;
+  flex-direction: column;
+`;
 
 function TextInputWithLabel({
   elementId,
@@ -7,7 +14,7 @@ function TextInputWithLabel({
   value,
 }) {
   return (
-    <>
+    <StyledFieldContainer>
       <label htmlFor={elementId}>{label}</label>
       <input
         type="text"
@@ -16,7 +23,7 @@ function TextInputWithLabel({
         value={value}
         onChange={onChange}
       />
-    </>
+    </StyledFieldContainer>
   );
 }
 

@@ -1,5 +1,19 @@
 import { useEffect, useState } from "react";
 import TextInputWithLabel from "../../shared/TextInputWithLabel";
+import styled from 'styled-components';
+
+import styles from './TodoListItem.module.css'
+
+const StyledButton = styled.button`
+    background-color: ${props => props.type === 'submit' ? '#2ecc71' : '#e74c3c'};
+    padding: 5px 10 px;
+    font-size: 0.8rem;
+    margin-left: 5px;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+`;
 
 function TodoListItem ({todo, onCompleteTodo, onUpdateTodo}) {
     
@@ -33,7 +47,7 @@ function TodoListItem ({todo, onCompleteTodo, onUpdateTodo}) {
     };
 
     return(
-        <li>
+        <li className={styles.item}>
             <form onSubmit={handleUpdate}>
                 {isEditing ? (
                     <>
@@ -43,12 +57,12 @@ function TodoListItem ({todo, onCompleteTodo, onUpdateTodo}) {
                             value = {workingTitle}
                             onChange = {handleEdit}
                         />
-                        <button type="button" onClick = {handleCancel}>
+                        <StyledButton type="button" onClick = {handleCancel}>
                             Cancel
-                        </button>
-                        <button type="submit" onClick={handleUpdate}>
+                        </StyledButton>
+                        <StyledButton type="submit" onClick={handleUpdate}>
                             Update
-                        </button>
+                        </StyledButton>
                     </>
                 ) : (
                     <>
