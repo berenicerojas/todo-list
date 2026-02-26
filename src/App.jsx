@@ -1,12 +1,13 @@
 import { useState, useEffect, useCallback, useReducer } from 'react'
+import {Routes, Route, useLocation } from 'react-router';
 import './App.css'
-import TodoList from './features/TodoList/TodoList';
-import TodoForm from './features/TodoForm';
-import TodosViewForm from './features/TodosViewForm';
-
-import statueLibertyIcon from './assets/statueLibertyIcon.jpg';
 import styles from './App.module.css';
 import styled from 'styled-components';
+import React from 'react';
+import TodosPage from './pages/TodosPage';
+import Header from './shared/Header';
+import About from './pages/About';
+import NotFound from './pages/NotFound';
 
 import {
   initialState as initialTodoState,
@@ -26,9 +27,24 @@ const ErrorIcon = styled.span`
 
 function App() {
   const [todoState, dispatch] =  useReducer(todosReducer, initialTodoState);
+  const [headerTitle, setHeaderTitle] = useState ("Todo List");
+  const location = useLocation(); 
   const [sortField, setSortField] = useState("createdTime");
   const [sortDirection, setSortDirection] = useState("desc");
   const [queryString, setQueryString] = useState("");
+
+  useEffect(() => {
+    switch (location.pathname){
+      case "/":
+        setHeaderTitle("Todo List");
+        break;
+        case "/about":
+          setHeaderTitle("About");
+          break;
+          default:
+            setHeaderTitle("Not Found");
+    }
+  }, [location]);
 
   const encodeUrl = useCallback(() => {
     let sortQuery =`sort[0][field]=${sortField}&sort[0][direction]=${sortDirection}`;
@@ -85,7 +101,7 @@ function App() {
     dispatch ({ type: todoActions.updateTodo, payload: editedTodo});
 
     try {
-      const resp = await fetch(encodeUrl(), {
+      const resp = await fetch(`${url}/${editedTodo}`, {
         method: 'PATCH',
         headers: { Authorization: token, 'Content-Type': 'application/json' },
         body: JSON.stringify ({
@@ -109,41 +125,45 @@ function App() {
 
   return (
     <div className = {styles.container}>
-      <header>
-        <img 
-        src = {statueLibertyIcon} 
-        alt = "Statue Liberty Icon" 
-        className = {styles.Logo} 
+      <Header title = {headerTitle}/>
+      <Routes>
+        <Route path = "/" element = {
+          <section>
+            <h2>Welcome!</h2>
+            <p>Ready to Organize?</p>
+          </section>
+        }/>
+
+        <Route path = "/about" element={
+          <section>
+            <h2>About this Project</h2>
+            <p>Built for Code the Dream Week 14</p>
+          </section>
+        }/>
+
+        <Route path = "/" element = {
+          <TodosPage
+          todoState={todoState}
+          addTodo={addTodo}
+          completeTodo={completeTodo}
+          updateTodo={updateTodo}
+          sortDirection={sortDirection}
+          setSortDirection={setSortDirection}
+          sortField={sortField}
+          setSortField={setSortField}
+          queryString={queryString}
+          setQueryString={setQueryString}
+          dispatch={dispatch}
+          todoActions={todoActions}
+          ErrorIcon={ErrorIcon}         
+          />
+        }
         />
-        <h1 style={{ margin: 0}}>My Tasks</h1>
-      </header>
 
-      <TodoForm onAddTodo={addTodo} isSaving={todoState.isSaving} />
+        <Route path="/about" element={<About />}/>
 
-      <TodoList 
-        todoList={todoState.todoList} 
-        onCompleteTodo={completeTodo} 
-        onUpdateTodo={updateTodo} 
-        isLoading={todoState.isLoading} 
-      />
-
-      <hr />
-      <TodosViewForm
-      sortDirection={sortDirection}
-      setSortDirection={setSortDirection}
-      sortField={sortField}
-      setSortField={setSortField}
-      queryString={queryString}
-      setQueryString={setQueryString}
-      />
-
-      {todoState.errorMessage && (
-        <div className={styles.errorBox}>
-          <hr />
-          <p><ErrorIcon>⚠️</ErrorIcon>{todoState.errorMessage}</p>
-          <button onClick={() => dispatch({ type : todoActions.clearError})}>Dismiss</button>
-        </div>
-      )}
+        <Route path="/*" element={<NotFound/>}/>
+      </Routes>
     </div>
   );
 }
