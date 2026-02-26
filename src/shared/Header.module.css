@@ -1,0 +1,34 @@
+.header{
+    position: relative;
+    padding: 20px;
+    text-align: center;
+}
+
+.title{
+    margin: 0;
+}
+
+.navBar{
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+.navList{
+    display: flex;
+    gap: 15px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.active{
+    color: #666;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.inactive{
+    color: #000;
+    text-decoration: none;
+}
